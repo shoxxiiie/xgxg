@@ -14,7 +14,7 @@ public:
             std::cout << std::endl;
             file.close();
         } else {
-            std::cout << "Error: Unable to open file." << std::endl;
+            std::cout << " " << std::endl;
         }
     }
     virtual ~FileHandler() = default;
