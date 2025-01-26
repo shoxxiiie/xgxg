@@ -4,7 +4,7 @@
 
 class FileHandler {
 public:
-    void display(const std::string& path) {
+    virtual void display(const std::string& path) {
         std::ifstream file(path);
         if (file.is_open()) {
             char c;
@@ -14,31 +14,32 @@ public:
             std::cout << std::endl;
             file.close();
         } else {
-            std::cout << std::endl;
+            std::cout << "Error: Unable to open file." << std::endl;
         }
     }
+    virtual ~FileHandler() = default;
 };
 
 class AsciiFileHandler : public FileHandler {
 public:
-    void display(const std::string& path) {
+    void display(const std::string& path) override {
         std::ifstream file(path);
         if (file.is_open()) {
             char c;
             while (file.get(c)) {
-                std::cout << (int)c << " ";
+                std::cout << static_cast<int>(c) << " ";
             }
             std::cout << std::endl;
             file.close();
         } else {
-            std::cout << std::endl;
+            std::cout << " " << std::endl;
         }
     }
 };
 
 class BinaryFileHandler : public FileHandler {
 public:
-    void display(const std::string& path) {
+    void display(const std::string& path) override {
         std::ifstream file(path);
         if (file.is_open()) {
             char c;
@@ -51,21 +52,25 @@ public:
             std::cout << std::endl;
             file.close();
         } else {
-            std::cout << std::endl;
+            std::cout << " " << std::endl;
         }
     }
 };
 
 int main() {
-    FileHandler basic;
-    AsciiFileHandler ascii;
-    BinaryFileHandler binary;
+    FileHandler* basic = new FileHandler();
+    FileHandler* ascii = new AsciiFileHandler();
+    FileHandler* binary = new BinaryFileHandler();
 
-    std::string file = "example.txt";
+    std::string file = " ";
 
-    basic.display(file);
-    ascii.display(file);
-    binary.display(file);
+    basic->display(file);
+    ascii->display(file);
+    binary->display(file);
+
+    delete basic;
+    delete ascii;
+    delete binary;
 
     return 0;
 }
